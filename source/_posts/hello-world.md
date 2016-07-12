@@ -43,9 +43,10 @@ $ hexo s
 ### 提交把博客到Github和Coding 平台
 （注：前提条件是在这两个平台都有账号，如果没有可以自行注册）
 ##### Github 创建Repository
-建立与你用户名对应的仓库，仓库名必须为【your_user_name.github.io】，固定写法,如下图所示
-![aa](_posts/git_repository.png)
+建立仓库，仓库名如【your_user_name.github.io】如图1所示
+![图1](hello-world/git_repository.png)
 
-##### Coding 创建Repository
+##### [Coding](https://coding.net/) 创建Repository
+
 
 

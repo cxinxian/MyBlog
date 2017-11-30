@@ -3,7 +3,7 @@ layout: post
 title: Hexo + github + Coding 搭建个人博客快速入门
 date: 2016-06-03 0:13
 tags: 
-	-hexo blog
+	hexo blog
 comments: true
 keywords: Hexo, Blog
 description: 生命在于折腾，花多点耐心，多点坚持，折腾出一个Hexo blog 总会有收获。给Hexo点赞。
@@ -15,14 +15,13 @@ toc: true
 <!-- more -->
 
 ### 关于Hexo的介绍
-Hexo是使用node.js技术开发的一个快速、简洁且高效的博客框架纯静态博客系统,
-使用Markdown来编写文章，通过Hexo生成静态网页，然后部署到服务器上。
+Hexo 是一个基于Node.js的快速、简洁且高效的静态博客框架,
+使用Markdown来编写文章，通过Hexo生成静态网页，最后部署到服务器上。
 
 ### 环境准备
-##### 安装 [node.js](https://nodejs.org/en/)
-作用：用来生成静态页面的
-##### 安装 [Git](http://git-scm.com/download)
-作用：是是把本地的Hexo提交到github或者Coding上去
+- 安装 [node.js](https://nodejs.org/en/)
+- 安装 [Git](http://git-scm.com/download)
+	作用：是把本地的Hexo生成的静态博客提交到github或者Coding上去
 
 ### 安装Hexo
 在安装完以上两个软件后，再你喜爱的文件夹内(如：E:\hexo)右键选择Git Bash here然后输入以下指令

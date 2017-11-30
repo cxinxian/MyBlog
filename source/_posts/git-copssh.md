@@ -3,7 +3,7 @@ layout: post
 title: Windows下搭建基于SSH的git代码仓库
 date: 2016-08-07 22:35
 tags: 	
-	- git
+	git
 comments: true
 keywords: git, copssh,windows,Blog
 description: 内心一点、坚持一点、总会有收获

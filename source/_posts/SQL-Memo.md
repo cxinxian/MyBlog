@@ -1,6 +1,6 @@
 ---
 layout: post
-title: SQL备忘录
+title: SQL备忘录一
 date: 2017-11-30 23:12:27
 categories:
 tags:
@@ -44,7 +44,7 @@ description: 点点滴滴就是积累
 
 5、尽可能的使用索引字段作为查询条件，尤其是聚簇索引，必要时可以通过index index_name来强制指定索引   如:
 ```
-select id from t where num=@num 
+select id from t where num=@num
 //可以改为强制查询使用索引：
 select id from t with(index(索引名)) where num=@num
 ```
@@ -52,11 +52,75 @@ select id from t with(index(索引名)) where num=@num
 要注意索引的维护，周期性重建索引，重新编译存储过程。
 
 ### 二、SQL使用规范
-1、尽量使用游标，因为效率差；
+1、尽量不使用游标，因为效率差；
 2、如果操作数据超过1w,应当改写游标
 
 
-
-
 ### 三、存储过程
+> **概念：**
+存储过程Procedure是一组为了完成特定功能的SQL语句集合，经编译后存储在数据库中，用户通过指定存储过程的名称并给出参数来执行。
+存储过程中可以包含逻辑控制语句和数据操纵语句，它可以接受参数、输出参数、返回单个或多个结果集以及返回值。
 
+**作用及优点：**
+* 增强数据的完整性
+* 复杂业务规则和约束的一致实现
+* 模块化设计
+* 可维护性
+* 降低网络通讯量
+* 提高执行效率
+* 较强的安全性
+
+由于存储过程在创建时即在数据库服务器上进行了编译并存储在数据库中，所以存储过程运行要比单个的SQL语句块要快。同时由于在调用时只需用提供存储过程名和必要的参数信息，所以在一定程度上也可以减少网络流量、简单网络负担。
+
+**具体使用**
+
+例子：更新用户密码
+```
+create proc update_user_pwd
+	@usr varchar(50),				 --输入变量，接收用户名
+	@old_pwd varchar(500),			--输入变量，接收旧密码
+	@new_pwd varchar(500),			--输入变量，接收新密码
+	@res int Output				   --输出变量，输出结果标志 0：成功； -1：用户名错误； -2：旧密码错误
+As
+if exists(select * from tb_user where username = @usr)
+	if exists(select * from tb_user where username = @usr and passworld = @pwd)
+		begin
+			update tb_user set passworld = @new_pwd where username = @usr
+			set @res = 0
+		end
+	else
+		select @res = -2
+else
+	select @res = -1
+return @res
+```
+
+实现分页查询：
+```
+--使用row_number函数分页
+if OBJECT_ID (N'PROC_SELECT_BY_PAGE', N'P') IS NOT NULL
+    drop procedure PROC_SELECT_BY_PAGE;
+gO
+create procedure PROC_SELECT_BY_PAGE
+    @startIndex int,
+    @endIndex int
+as
+    select  * from (select id,name,age,sex,row_number() over(order by id desc) as rownumber from tb_user) as Temp
+    where Temp.rownumber between @startIndex AND @endIndex
+go
+
+
+
+--使用top 分页查询
+使用row_number函数分页
+if OBJECT_ID (N'PROC_SELECT_BY_PAGE_top', N'P') IS NOT NULL
+    drop procedure PROC_SELECT_BY_PAGE_top;
+gO
+create procedure PROC_SELECT_BY_PAGE_top
+    @pageIndex int,
+    @pageSize int
+as
+    select top(pageSize) * from tb_user where id >= (select max(id) from (select top(pageSize*(pageIndex-1)+1 from tb_user) id from tb_user order by id)as Temp)
+go
+
+```
